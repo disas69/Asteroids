@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2b6395b79d64e35802afb7877e84eeb, type: 3}
+  m_Name: AsteroidsConfiguration
+  m_EditorClassIdentifier: 
+  AsteroidsSettings:
+  - Type: 0
+    InitialVelocity: 5
+    MaxVelocity: 20
+    MaxTorque: 100
+    SpawnOnDestroy: 0
+    SpawnOnDestroySettings:
+      ObjectPrefab: {fileID: 0}
+      Count: 0
+      PoolCapacity: 0
+  - Type: 1
+    InitialVelocity: 2
+    MaxVelocity: 10
+    MaxTorque: 50
+    SpawnOnDestroy: 1
+    SpawnOnDestroySettings:
+      ObjectPrefab: {fileID: 114582448654913010, guid: bf36b079cf9d94b4e88d43fcabe2254f,
+        type: 2}
+      Count: 2
+      PoolCapacity: 2
+  - Type: 2
+    InitialVelocity: 1
+    MaxVelocity: 5
+    MaxTorque: 25
+    SpawnOnDestroy: 1
+    SpawnOnDestroySettings:
+      ObjectPrefab: {fileID: 114582448654913010, guid: ece9be459cc6851498be5027e8cb7547,
+        type: 2}
+      Count: 2
+      PoolCapacity: 2
