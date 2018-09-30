@@ -18,7 +18,6 @@ namespace Game.Gameplay.SpaceObjects
         protected override void OnContactHandlerEntered(SpaceObject spaceObject)
         {
             base.OnContactHandlerEntered(spaceObject);
-
             if (_expirationCoroutine != null)
             {
                 StopCoroutine(_expirationCoroutine);
@@ -27,13 +26,13 @@ namespace Game.Gameplay.SpaceObjects
             Deactivate(false);
         }
 
-        public void Fire(Vector2 position, Quaternion rotation)
+        public void Setup(Vector2 position, Quaternion rotation)
         {
             transform.position = position;
             transform.rotation = rotation;
             
             Activate();
-            Rigidbody.AddForce(transform.up * _velocity);
+            Rigidbody.AddForce(transform.up * _velocity, ForceMode2D.Impulse);
             
             _expirationCoroutine = StartCoroutine(Expire());
         }

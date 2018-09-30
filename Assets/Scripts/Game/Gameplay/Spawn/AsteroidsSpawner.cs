@@ -8,30 +8,66 @@ using Random = UnityEngine.Random;
 
 namespace Game.Gameplay.Spawn
 {
+    [Serializable]
+    public class SpawnSetup
+    {
+        public Spawner Spawner;
+        [Range(0f, 1f)] 
+        public float Probability;
+    }
+
     public class AsteroidsSpawner : MonoBehaviour
     {
         private Coroutine _spawnCoroutine;
-        private Dictionary<SpaceObject, Spawner> _activeSpaceObjects;
 
-        [SerializeField] private List<SpawnSetup> _spawnSetups;
-        [SerializeField] private float _spawnDelay;
-        [SerializeField] private int _maxAsteroidsCount;
+        public List<SpawnSetup> SpawnSetups;
+        public bool Spawning { get; private set; }
 
         private void Awake()
         {
-            _spawnSetups.Sort((setup1, setup2) => setup1.Probability.CompareTo(setup2.Probability));
-            _activeSpaceObjects = new Dictionary<SpaceObject, Spawner>();
+            SpawnSetups.Sort((setup1, setup2) => setup1.Probability.CompareTo(setup2.Probability));
+        }
 
+        public void StartSpawn()
+        {
             _spawnCoroutine = StartCoroutine(Spawn());
+            Spawning = true;
+        }
+
+        public void RestartSpawn()
+        {
+            StopSpawn();
+            StartSpawn();
+        }
+
+        private void StopSpawn()
+        {
+            if (_spawnCoroutine != null)
+            {
+                StopCoroutine(_spawnCoroutine);
+            }
+
+            for (var i = 0; i < SpawnSetups.Count; i++)
+            {
+                SpawnSetups[i].Spawner.Flush();
+            }
+
+            var innerAsteroids = GetComponentsInChildren<Asteroid>();
+            for (int i = 0; i < innerAsteroids.Length; i++)
+            {
+                innerAsteroids[i].Deactivate(false);
+            }
+            
+            Spawning = false;
         }
 
         private IEnumerator Spawn()
         {
             while (true)
             {
-                yield return new WaitForSeconds(_spawnDelay);
+                yield return new WaitForSeconds(GameConfiguration.Instance.AsteroidsSpawnDelay);
 
-                if (_activeSpaceObjects.Count < _maxAsteroidsCount)
+                if (GetActiveAsteroidsCount() < GameConfiguration.Instance.MaxAsteroidsCount)
                 {
                     var spawner = GetNextSpawner(Random.value);
                     if (spawner != null)
@@ -39,35 +75,18 @@ namespace Game.Gameplay.Spawn
                         var spaceAsteroid = spawner.Spawn() as Asteroid;
                         if (spaceAsteroid != null)
                         {
-                            spaceAsteroid.Deactivated += OnAsteroidDeactivated;
-                            spaceAsteroid.Push(
-                                AsteroidsConfiguration.Instance.GetAsteroidSettings(spaceAsteroid.AsteroidType));
-
-                            _activeSpaceObjects.Add(spaceAsteroid, spawner);
+                            spaceAsteroid.Setup(AsteroidsConfiguration.Instance.GetAsteroidSettings(spaceAsteroid.AsteroidType));
                         }
                     }
                 }
             }
         }
 
-        private void OnAsteroidDeactivated(SpaceObject spaceAsteroid)
-        {
-            spaceAsteroid.Deactivated -= OnAsteroidDeactivated;
-
-            Spawner spawner;
-            if (_activeSpaceObjects.TryGetValue(spaceAsteroid, out spawner))
-            {
-                spawner.Despawn(spaceAsteroid);
-            }
-
-            _activeSpaceObjects.Remove(spaceAsteroid);
-        }
-
         private Spawner GetNextSpawner(float chance)
         {
-            for (int i = 0; i < _spawnSetups.Count; i++)
+            for (int i = 0; i < SpawnSetups.Count; i++)
             {
-                var spawnSetup = _spawnSetups[i];
+                var spawnSetup = SpawnSetups[i];
                 if (spawnSetup.Probability >= chance)
                 {
                     return spawnSetup.Spawner;
@@ -76,12 +95,16 @@ namespace Game.Gameplay.Spawn
 
             return null;
         }
-    }
 
-    [Serializable]
-    public class SpawnSetup
-    {
-        public Spawner Spawner;
-        [Range(0f, 1f)] public float Probability;
+        private int GetActiveAsteroidsCount()
+        {
+            var count = 0;
+            for (var i = 0; i < SpawnSetups.Count; i++)
+            {
+                count += SpawnSetups[i].Spawner.Count;
+            }
+
+            return count;
+        }
     }
 }

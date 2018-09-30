@@ -10,7 +10,7 @@ namespace Framework.UI.Structure.Base
     {
         private CanvasGroup _canvasGroup;
         private Coroutine _transitionCoroutine;
-        private INavigationProvider _navigationProvider;
+        private IUINavigationProvider _iuiNavigationProvider;
 
         [SerializeField] private bool _inTransition = true;
         [SerializeField] private bool _outTransition = true;
@@ -63,9 +63,9 @@ namespace Framework.UI.Structure.Base
             callback.SafeInvoke();
         }
 
-        public void Initialize(INavigationProvider navigationProvider)
+        public void Initialize(IUINavigationProvider iuiNavigationProvider)
         {
-            _navigationProvider = navigationProvider;
+            _iuiNavigationProvider = iuiNavigationProvider;
         }
 
         public virtual void OnEnter()
@@ -87,7 +87,7 @@ namespace Framework.UI.Structure.Base
 
         public virtual void Close()
         {
-            _navigationProvider.Back();
+            _iuiNavigationProvider.Back();
         }
 
         public virtual void OnExit()

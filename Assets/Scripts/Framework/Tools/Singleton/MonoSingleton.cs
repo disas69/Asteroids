@@ -18,9 +18,9 @@ namespace Framework.Tools.Singleton
                     {
                         _instance = new GameObject().AddComponent<T>();
                         _instance.gameObject.name = typeof(T).Name;
+                        
+                        DontDestroyOnLoad(_instance.gameObject);
                     }
-
-                    DontDestroyOnLoad(_instance.gameObject);
                 }
 
                 return _instance;

@@ -31,6 +31,7 @@ namespace Game.Configuration.Editor
                         var initialVelocity = element.FindPropertyRelative("InitialVelocity");
                         var maxVelocity = element.FindPropertyRelative("MaxVelocity");
                         var maxTorque = element.FindPropertyRelative("MaxTorque");
+                        var scorePoints = element.FindPropertyRelative("ScorePoints");
                         var spawnOnDestroy = element.FindPropertyRelative("SpawnOnDestroy");
 
                         EditorGUILayout.BeginVertical();
@@ -39,13 +40,15 @@ namespace Game.Configuration.Editor
                             EditorGUILayout.PropertyField(initialVelocity);
                             EditorGUILayout.PropertyField(maxVelocity);
                             EditorGUILayout.PropertyField(maxTorque);
+                            EditorGUILayout.PropertyField(scorePoints);
                             EditorGUILayout.PropertyField(spawnOnDestroy);
 
                             if (spawnOnDestroy.boolValue)
                             {
-                                EditorGUILayout.LabelField("Spawn Settings", HeaderStyle);
                                 EditorGUILayout.BeginVertical(GUI.skin.box);
                                 {
+                                    EditorGUILayout.LabelField("Spawn Settings", HeaderStyle);
+
                                     var spawnOnDestroySettings = element.FindPropertyRelative("SpawnOnDestroySettings");
                                     var objectPrefab = spawnOnDestroySettings.FindPropertyRelative("ObjectPrefab");
                                     var objectsCount = spawnOnDestroySettings.FindPropertyRelative("Count");

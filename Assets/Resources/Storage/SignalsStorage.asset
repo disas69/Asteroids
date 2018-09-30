@@ -11,4 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d7213d59b7f5d3419844f2e4c5c2e71, type: 3}
   m_Name: SignalsStorage
   m_EditorClassIdentifier: 
-  Signals: []
+  Signals:
+  - ShipDestroyed
+  - LivesCountChanged
+  - ScoreChanged
+  - AsteroidDestroyed
+  - PlayAudio
+  - GameStarted

@@ -11,8 +11,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7de44c2dffcf554cbcd085bb34b6795, type: 3}
   m_Name: GameConfiguration
   m_EditorClassIdentifier: 
-  BallKickOffDelay: 0
-  RacketMaxSize: 0
-  RacketMinSize: 0
-  RacketSizeDecreaseValue: 0
-  RacketSizeDecreaseRate: 0
+  LivesCount: 3

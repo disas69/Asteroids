@@ -11,7 +11,7 @@ namespace Game.Gameplay
         [SerializeField] private BoxCollider _rightBound;
         [SerializeField] private BoxCollider _topBound;
         [SerializeField] private BoxCollider _bottomBound;
-        [SerializeField] private bool _executeInUpdate;
+        [SerializeField] private bool _updateBounds;
 
         public Vector2 LeftBound
         {
@@ -41,7 +41,7 @@ namespace Game.Gameplay
 
         private void Update()
         {
-            if (_executeInUpdate)
+            if (_updateBounds)
             {
                 Calculate();
             }

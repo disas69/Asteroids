@@ -62,7 +62,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1586631932288182
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,7 +87,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4677044925619506}
-  - component: {fileID: 114584000858917692}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
@@ -118,13 +117,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1586631932288182}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.03, y: -0.03, z: 0.03}
+  m_LocalScale: {x: 0.03, y: 0.03, z: 0.03}
   m_Children: []
   m_Father: {fileID: 4072271033091408}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!4 &4677044925619506
 Transform:
   m_ObjectHideFlags: 1
@@ -176,7 +175,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 1
+  m_LinearDrag: 1.5
   m_AngularDrag: 1
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -224,28 +223,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _view: {fileID: 1586631932288182}
   _destroyEffect: {fileID: 198442744273281356}
-  _shotDelay: 0.1
-  _rotationSpeed: 150
-  _thrustForce: 10
   _weapon: {fileID: 4677044925619506}
   _laserSpawner: {fileID: 114907922355298606}
---- !u!114 &114584000858917692
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1830875283713410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd0084ed31e64cfc8fcbd6dc8424930f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _activateOnAwake: 1
-  _spawnSettings:
-    ObjectPrefab: {fileID: 114288323971249834, guid: 61a9486291503e64696206c172ea4915,
-      type: 2}
-    Count: 1
-    PoolCapacity: 15
+  _destroyedSignal:
+    Name: ShipDestroyed
 --- !u!114 &114633341307273750
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -273,7 +254,7 @@ MonoBehaviour:
     ObjectPrefab: {fileID: 114288323971249834, guid: 61a9486291503e64696206c172ea4915,
       type: 2}
     Count: 1
-    PoolCapacity: 15
+    PoolCapacity: 5
 --- !u!198 &198442744273281356
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -3768,7 +3749,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 03b61c1a9534ce345897f11042a80c91, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 517a3bb278fcc5a4c99d38cb0a4ed9d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

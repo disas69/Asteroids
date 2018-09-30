@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Framework.Attributes;
 using Framework.Tools.Singleton;
 using Game.Gameplay.SpaceObjects;
@@ -24,16 +23,5 @@ namespace Game.Configuration
             Debug.LogError(string.Format("Failed to find AsteroidSettings of type: {0}", type));
             return null;
         }
-    }
-
-    [Serializable]
-    public class AsteroidSettings
-    {
-        public AsteroidType Type;
-        public float InitialVelocity;
-        public float MaxVelocity;
-        public float MaxTorque;
-        public bool SpawnOnDestroy;
-        public SpawnSettings SpawnOnDestroySettings = new SpawnSettings();
     }
 }

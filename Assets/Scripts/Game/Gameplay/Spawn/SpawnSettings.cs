@@ -1,8 +1,7 @@
 ﻿using System;
 using Game.Gameplay.SpaceObjects;
-using UnityEngine;
 
-namespace Game.Configuration
+namespace Game.Gameplay.Spawn
 {
     [Serializable]
     public class SpawnSettings

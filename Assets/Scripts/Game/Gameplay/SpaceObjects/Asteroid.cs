@@ -1,4 +1,5 @@
-﻿using Game.Configuration;
+﻿using Framework.Signals;
+using Game.Configuration;
 using Game.Gameplay.Spawn;
 using UnityEngine;
 
@@ -20,8 +21,10 @@ namespace Game.Gameplay.SpaceObjects
         private float _maxVelocity;
         private float _maxTorque;
         private SpawnSettings _spawnSettings;
+        private int _scorePoints;
 
         [SerializeField] private AsteroidType _asteroidType;
+        [SerializeField] private Signal _destroyedSignal;
 
         public override SpaceObjectType Type
         {
@@ -33,11 +36,12 @@ namespace Game.Gameplay.SpaceObjects
             get { return _asteroidType; }
         }
 
-        public void Push(AsteroidSettings asteroidSettings)
+        public void Setup(AsteroidSettings asteroidSettings)
         {
             _initialVelocity = asteroidSettings.InitialVelocity;
             _maxVelocity = asteroidSettings.MaxVelocity;
             _maxTorque = asteroidSettings.MaxTorque;
+            _scorePoints = asteroidSettings.ScorePoints;
 
             if (asteroidSettings.SpawnOnDestroy)
             {
@@ -55,14 +59,12 @@ namespace Game.Gameplay.SpaceObjects
         protected override void Awake()
         {
             base.Awake();
-            
             _spawner = GetComponent<Spawner>();
         }
 
         protected override void Activate()
         {
             base.Activate();
-            
             _direction = new Vector2(Random.value, Random.value);
             transform.position = CalculatePosition(SpaceBounds.Instance);
             Rigidbody.velocity = new Vector2(Random.Range(0f, _initialVelocity), Random.Range(0f, _initialVelocity));
@@ -87,10 +89,34 @@ namespace Game.Gameplay.SpaceObjects
                 return;
             }
 
-            Deactivate();
+            if (spaceObject.Type == SpaceObjectType.Laser)
+            {
+                SignalsManager.Broadcast(_destroyedSignal.Name, _scorePoints);
+                SignalsManager.Broadcast("PlayAudio", "destroyed");
+                Deactivate();
+            }
         }
 
-        protected override void Deactivate(bool playDestroyEffect = true)
+        public override void Deactivate(bool destroy = true)
+        {
+            if (destroy)
+            {
+                SpawnInnerAsteroids();
+            }
+            
+            base.Deactivate(destroy);
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+            if (Rigidbody.velocity.magnitude < _maxVelocity)
+            {
+                Rigidbody.AddRelativeForce(_direction);
+            }
+        }
+
+        private void SpawnInnerAsteroids()
         {
             if (_spawnSettings != null)
             {
@@ -99,30 +125,11 @@ namespace Game.Gameplay.SpaceObjects
                     var asteroid = _spawner.Spawn() as Asteroid;
                     if (asteroid != null)
                     {
-                        asteroid.Deactivated += OnSpawnedAsteroidDeactivated;
-                        asteroid.Push(AsteroidsConfiguration.Instance.GetAsteroidSettings(asteroid.AsteroidType));
+                        asteroid.Setup(AsteroidsConfiguration.Instance.GetAsteroidSettings(asteroid.AsteroidType));
                         asteroid.transform.position = transform.position;
                         asteroid.transform.SetParent(transform.parent);
                     }
                 }
-            }
-            
-            base.Deactivate(playDestroyEffect);
-        }
-
-        private void OnSpawnedAsteroidDeactivated(SpaceObject asteroid)
-        {
-            asteroid.Deactivated -= OnSpawnedAsteroidDeactivated;
-            Destroy(asteroid.gameObject);
-        }
-
-        protected override void Update()
-        {
-            base.Update();
-
-            if (Rigidbody.velocity.magnitude < _maxVelocity)
-            {
-                Rigidbody.AddRelativeForce(_direction);
             }
         }
     }

@@ -17,6 +17,7 @@ MonoBehaviour:
     MaxVelocity: 20
     MaxTorque: 100
     SpawnOnDestroy: 0
+    ScorePoints: 100
     SpawnOnDestroySettings:
       ObjectPrefab: {fileID: 0}
       Count: 0
@@ -26,6 +27,7 @@ MonoBehaviour:
     MaxVelocity: 10
     MaxTorque: 50
     SpawnOnDestroy: 1
+    ScorePoints: 100
     SpawnOnDestroySettings:
       ObjectPrefab: {fileID: 114582448654913010, guid: bf36b079cf9d94b4e88d43fcabe2254f,
         type: 2}
@@ -36,6 +38,7 @@ MonoBehaviour:
     MaxVelocity: 5
     MaxTorque: 25
     SpawnOnDestroy: 1
+    ScorePoints: 100
     SpawnOnDestroySettings:
       ObjectPrefab: {fileID: 114582448654913010, guid: ece9be459cc6851498be5027e8cb7547,
         type: 2}

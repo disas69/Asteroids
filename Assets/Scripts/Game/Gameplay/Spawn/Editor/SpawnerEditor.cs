@@ -11,11 +11,10 @@ namespace Game.Gameplay.Spawn.Editor
         {
             base.DrawInspector();
 
-            
-
-            EditorGUILayout.LabelField("Spawn Settings", HeaderStyle);
             EditorGUILayout.BeginVertical(GUI.skin.box);
             {
+                EditorGUILayout.LabelField("Spawn Settings", HeaderStyle);
+                
                 var activateOnAwake = serializedObject.FindProperty("_activateOnAwake");
                 EditorGUILayout.PropertyField(activateOnAwake);
                 

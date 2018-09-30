@@ -1,20 +1,22 @@
-﻿using System.Collections.Generic;
-using Framework.Extensions;
+﻿using Framework.Signals;
+using Game.Configuration;
 using Game.Gameplay.Spawn;
+using Game.Input;
 using UnityEngine;
 
 namespace Game.Gameplay.SpaceObjects
 {
     public class Ship : SpaceObject
     {
+        private IInputProvider _input;
         private float _timeFromLastShot;
-        private List<SpaceObject> _activeLasers;
+        private float _movingForce;
+        private float _rotationSpeed;
+        private float _shotDelay;
 
-        [SerializeField] private float _shotDelay;
-        [SerializeField] private float _rotationSpeed = 100.0f;
-        [SerializeField] private float _thrustForce = 3f;
         [SerializeField] private Transform _weapon;
         [SerializeField] private Spawner _laserSpawner;
+        [SerializeField] private Signal _destroyedSignal;
 
         public override SpaceObjectType Type
         {
@@ -24,8 +26,25 @@ namespace Game.Gameplay.SpaceObjects
         protected override void Awake()
         {
             base.Awake();
-            _activeLasers = new List<SpaceObject>();
             _laserSpawner.transform.SetParent(transform.parent);
+            
+#if UNITY_IOS || UNITY_ANDROID
+      		_input = new MobileInput();
+#else
+            _input = new KeyboardInput();
+#endif
+        }
+
+        public void Setup(ShipSettings settings)
+        {
+            _movingForce = settings.MovingForce;
+            _rotationSpeed = settings.RotationSpeed;
+            _shotDelay = settings.ShotDelay;
+
+            Rigidbody.drag = settings.LinearDrag;
+            Rigidbody.angularDrag = settings.AngularDrag;
+
+            Activate();
         }
 
         protected override void Activate()
@@ -38,28 +57,27 @@ namespace Game.Gameplay.SpaceObjects
         protected override void OnContactHandlerEntered(SpaceObject spaceObject)
         {
             base.OnContactHandlerEntered(spaceObject);
+            SignalsManager.Broadcast("PlayAudio", "ship_destroyed");
             Deactivate();
         }
 
         protected override void Update()
         {
             base.Update();
-
             if (IsActive)
             {
-                transform.Rotate(0, 0, -Input.GetAxis("Horizontal") * _rotationSpeed * Time.deltaTime);
-                Rigidbody.AddForce(transform.up * _thrustForce * Input.GetAxis("Vertical"));
+                transform.Rotate(0, 0, -_input.GetRotation() * _rotationSpeed * Time.deltaTime);
+                Rigidbody.AddForce(transform.up * _movingForce * _input.GetMovement());
 
-                if (Input.GetKey(KeyCode.Space))
+                if (_input.ActionButtonPressed())
                 {
                     if (_timeFromLastShot > _shotDelay)
                     {
                         var laser = _laserSpawner.Spawn() as Laser;
                         if (laser != null)
                         {
-                            _activeLasers.Add(laser);
-                            laser.Deactivated += OnLaserDeactivated;
-                            laser.Fire(_weapon.transform.position, transform.rotation);
+                            laser.Setup(_weapon.transform.position, transform.rotation);
+                            SignalsManager.Broadcast("PlayAudio", "laser");
                         }
 
                         _timeFromLastShot = 0f;
@@ -76,26 +94,16 @@ namespace Game.Gameplay.SpaceObjects
             }
         }
 
-        protected override void Deactivate(bool playDestroyEffect = true)
+        public override void Deactivate(bool destroy = true)
         {
-            base.Deactivate(playDestroyEffect);
-
-            for (int i = 0; i < _activeLasers.Count; i++)
-            {
-                _laserSpawner.Despawn(_activeLasers[i]);
-            }
-            
-            _activeLasers.Clear();
-
-            this.WaitForSeconds(2f, Activate);
+            base.Deactivate(destroy);
+            _laserSpawner.Flush();
         }
 
-        private void OnLaserDeactivated(SpaceObject laser)
+        protected override void FireDeactivated()
         {
-            laser.Deactivated -= OnLaserDeactivated;
-            
-            _activeLasers.Remove(laser);
-            _laserSpawner.Despawn(laser);
+            base.FireDeactivated();
+            SignalsManager.Broadcast(_destroyedSignal.Name);
         }
     }
 }

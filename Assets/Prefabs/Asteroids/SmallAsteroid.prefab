@@ -180,6 +180,8 @@ MonoBehaviour:
   _view: {fileID: 1116657124329404}
   _destroyEffect: {fileID: 198556342203605012}
   _asteroidType: 0
+  _destroyedSignal:
+    Name: AsteroidDestroyed
 --- !u!114 &114910666849987162
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -408,7 +410,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 0.4
       minScalar: 1
       maxCurve:
         serializedVersion: 2

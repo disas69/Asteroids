@@ -5,7 +5,7 @@ namespace Game.Camera
     [RequireComponent(typeof(UnityEngine.Camera))]
     public class CameraController : MonoBehaviour
     {
-        [SerializeField] private bool _executeInUpdate;
+        [SerializeField] private bool _updateBounds;
 
         public UnityEngine.Camera Camera { get; private set; }
         public Bounds Bounds { get; private set; }
@@ -18,7 +18,7 @@ namespace Game.Camera
 
         private void Update()
         {
-            if (_executeInUpdate)
+            if (_updateBounds)
             {
                 Bounds = CalculateOrthographicBounds(Camera);
             }

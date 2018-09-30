@@ -11,4 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c521c5de0aaf405895541faf255dd5ae, type: 3}
   m_Name: AudioStorage
   m_EditorClassIdentifier: 
-  AudioClips: []
+  AudioClips:
+  - Key: laser
+    AudioClip: {fileID: 8300000, guid: 911c10391523f3b43af0b49a2c028b8e, type: 3}
+  - Key: destroyed
+    AudioClip: {fileID: 8300000, guid: e045fadf703a05b4ca0b4266fc886c14, type: 3}
+  - Key: ship_destroyed
+    AudioClip: {fileID: 8300000, guid: 4626d753963f7ca44ba9b4303f54e6bd, type: 3}

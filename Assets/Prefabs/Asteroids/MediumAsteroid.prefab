@@ -259,6 +259,8 @@ MonoBehaviour:
   _view: {fileID: 1949337896710866}
   _destroyEffect: {fileID: 198556342203605012}
   _asteroidType: 1
+  _destroyedSignal:
+    Name: AsteroidDestroyed
 --- !u!198 &198556342203605012
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -319,14 +321,14 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1785892818
+  randomSeed: 148474886
   InitialModule:
     serializedVersion: 3
     enabled: 1
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.3
+      scalar: 0.4
       minScalar: 0.5
       maxCurve:
         serializedVersion: 2
@@ -367,8 +369,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 10
-      minScalar: 7
+      scalar: 8
+      minScalar: 5
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -471,7 +473,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 0.4
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -965,7 +967,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 40
+        scalar: 30
         minScalar: 0
         maxCurve:
           serializedVersion: 2

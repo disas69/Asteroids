@@ -11,4 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c521c5de0aaf405895541faf255dd5ae, type: 3}
   m_Name: MusicStorage
   m_EditorClassIdentifier: 
-  AudioClips: []
+  AudioClips:
+  - Key: music2
+    AudioClip: {fileID: 8300000, guid: 5da4241b54137a544b8a00923c0086ba, type: 3}
+  - Key: music3
+    AudioClip: {fileID: 8300000, guid: 297b36508aeaca742a882298f151f0f0, type: 3}

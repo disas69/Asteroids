@@ -35,8 +35,7 @@ namespace Game.Gameplay.SpaceObjects
 
             Collider = GetComponent<Collider2D>();
             Rigidbody = GetComponent<Rigidbody2D>();
-            
-            Activate();
+            Collider.isTrigger = true;
         }
 
         protected virtual void Activate()
@@ -65,28 +64,31 @@ namespace Game.Gameplay.SpaceObjects
             ClampPosition(SpaceBounds.Instance);
         }
 
-        protected virtual void Deactivate(bool playDestroyEffect = true)
+        public virtual void Deactivate(bool destroy = true)
         {
             IsActive = false;
             Collider.enabled = false;
             Rigidbody.velocity = Vector2.zero;
+            Rigidbody.angularVelocity = 0f;
             
             _view.gameObject.SetActive(false);
 
-            if (playDestroyEffect)
+            if (gameObject.activeSelf && destroy)
             {
                 _destroyEffect.gameObject.SetActive(true);
                 _destroyEffect.Play();
                 
-                this.WaitForSeconds(_destroyEffect.main.duration, () =>
-                {
-                    Deactivated.SafeInvoke(this);
-                });
+                this.WaitForSeconds(_destroyEffect.main.duration, FireDeactivated);
             }
             else
             {
-                Deactivated.SafeInvoke(this);
+                FireDeactivated();
             }
+        }
+
+        protected virtual void FireDeactivated()
+        {
+            Deactivated.SafeInvoke(this);
         }
 
         protected virtual void OnDestroy()
