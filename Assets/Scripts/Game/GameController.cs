@@ -50,20 +50,20 @@ namespace Game
 
         private void ActivateStart()
         {
-            _pagesNavigation.OpenScreen<StartPage>();
             _gameSession.Activate();
+            _pagesNavigation.OpenScreen<StartPage>();
         }
 
         private void ActivatePlay()
         {
-            _pagesNavigation.OpenScreen<PlayPage>();
             _gameSession.StartSession();
+            _pagesNavigation.OpenScreen<PlayPage>();
         }
 
         private void ActivateGameOver()
         {
-            _pagesNavigation.OpenScreen<GameOverPage>();
             _gameSession.StopSession();
+            _pagesNavigation.OpenScreen<GameOverPage>();
         }
 
         private void OnDestroy()
